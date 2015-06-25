@@ -37,6 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # extra dependencies
+    'bootstrap3',
+    'compressor',
+    'registration',
+    # my app(s)
     'exchange',
 )
 
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'libelli.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ["templates/"], # include folder with base templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +73,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'libelli.wsgi.application'
 
@@ -99,5 +105,23 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_ROOT = ''
 STATIC_URL = '/static/'
+
+# general static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # Compressor is the javascript / css minifier
+    'compressor.finders.CompressorFinder',
+)
+
+# registration settings
+ACCOUNT_ACTIVATION_DAYS = 2    # 2 days to activate account via email
+REGISTRATION_AUTO_LOGIN = True # Automatically log the user in
+
+# email debug
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
