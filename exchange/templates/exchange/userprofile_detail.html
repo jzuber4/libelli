@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}Your profile{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if userprofile.profile_picture %}
+        <p><img src="{{ userprofile.profile_picture.url }}"/></p>
+        {% endif %}
+        <br/>
+        <p>Full name:</p>
+        <p>{{userprofile.name}}</p>
+        <br/>
+        <p>Address:</p>
+        <ul class="list-unstyled">
+            {% if userprofile.address_line_1 %}
+            <li>{{ userprofile.address_line_1 }}</li>
+            {% endif %}
+            {% if userprofile.address_line_2 %}
+            <li>{{ userprofile.address_line_1 }}</li>
+            {% endif %}
+            {% if userprofile.address_city or userprofile.address_state or userprofile.address_code %}
+            <li>{{ userprofile.address_city }}, {{ userprofile.address_state }} {{ userprofile.address_code }}</li>
+            {% endif %}
+            {% if userprofile.address_country %}
+            <li>{{ userprofile.address_country }}</li>
+            {% endif %}
+        </ul>
+        <br/>
+        {% if user == userprofile.user %}
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% bootstrap_icon 'edit' %} Edit profile</a>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+
+    </div>
+</div>
+{% endblock %}

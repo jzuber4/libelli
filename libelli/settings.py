@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     # extra dependencies
     'bootstrap3',
     'compressor',
+    'debug_toolbar',
     'registration',
     # my app(s)
     'exchange',
@@ -119,9 +120,21 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
+# auth settings
+LOGIN_REDIRECT_URL = '/'
+
 # registration settings
 ACCOUNT_ACTIVATION_DAYS = 2    # 2 days to activate account via email
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in
 
 # email debug
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# bootstrap settings
+BOOTSTRAP3 = {
+    'success_css_class': '',
+}
+
+# image uploads
+MEDIA_ROOT = 'media/'
+MEDIA_URL  = '/media/'

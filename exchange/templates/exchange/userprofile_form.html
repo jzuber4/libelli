@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}Update your profile{% endblock %}
+
+{% block content %}
+<form enctype="multipart/form-data" method="post" action="{% url 'edit_profile' %}">
+  {% csrf_token %} 
+  {% bootstrap_form form %}
+
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">{% trans 'Update' %}</button>
+  {% endbuttons %}
+</form>
+
+{% endblock %}

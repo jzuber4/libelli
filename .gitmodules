@@ -1,0 +1,3 @@
+[submodule "django-address"]
+	path = django-address
+	url = https://github.com/furious-luke/django-address.git

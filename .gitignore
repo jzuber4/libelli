@@ -1,8 +1,11 @@
 # virtual env folder
 /env
 
+# user files
+/media
+
 # compiled files
-*.pyc 
+*.pyc
 
 # database 
 db.sqlite3
