@@ -1,0 +1,42 @@
+<div class="row">
+    <p>
+{% if fr.from_user == user %}
+{# outgoing friend requests #}
+
+<div class="col-xs-8">
+    <p>Pending friend request for <a href="{% url 'profile' fr.to_user.username %}">{{ fr.to_user.username }}</a>.</p>
+</div>
+<div class="col-xs-4">
+    <form class="form" method="post" action="{% url 'friendship_requests_cancel' fr.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger pull-left">Cancel request</button>
+    </form>
+</div>
+
+{% elif fr.to_user == user %}
+{# incoming friend requests #}
+
+{% if fr.rejected %}
+<div class="col-xs-12">
+    <p>You rejected <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}'s</a> friend request.</p>
+</div>
+
+{% else %}
+<div class="col-xs-8">
+    <p>Pending friend request from <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}</a>.</p>
+</div>
+<div class="col-xs-4">
+    <form class="form-inline" method="post">
+        {% csrf_token %}
+        <div class="btn-group pull-left">
+            <button type="submit" formaction="{% url 'friendship_requests_accept' fr.pk %}" class="btn btn-primary">Accept</button>
+            <button type="submit" formaction="{% url 'friendship_requests_reject' fr.pk %}" class="btn btn-default">Reject</button>
+        </div>
+    </form>
+</div>
+
+{% endif %}
+
+{% endif %}
+    </p>
+</div>

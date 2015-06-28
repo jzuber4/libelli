@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if friendshiprequest_list|length > 0 %}
+{% for fr in friendshiprequest_list %}
+{% include "friends/friendshiprequest_individual.html" %}
+{% endfor %}
+{% else %}
+You have no friend requests.
+{% endif %}
+{% endblock %}

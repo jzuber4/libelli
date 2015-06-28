@@ -19,11 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
+import friends.urls
 
 urlpatterns = [
     url(r'', include('exchange.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^friends/', include(friends.urls)),
 ]
 
 # Serve static files in debug.

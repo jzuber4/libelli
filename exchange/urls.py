@@ -2,10 +2,10 @@
 """
 from django.conf.urls import url
 
-from .views import index, user_profile_detail, user_profile_update
+from . import views
 
 urlpatterns = [
-    url(r'^$', index, name='index'),
-    url(r'^profile/(?P<username>[\w-]+)/$', user_profile_detail, name='profile'),
-    url(r'^profile/edit$', user_profile_update, name='edit_profile'),
+    url(r'^$', views.index, name='index'),
+    url(r'^profile/(?P<username>[\w-]+)/$', views.UserProfileDetailView.as_view(), name='profile'),
+    url(r'^profile/edit$', views.UserProfileUpdateView.as_view(), name='edit_profile'),
 ]
