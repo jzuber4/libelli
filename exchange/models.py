@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from registration.signals import user_registered
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -67,10 +68,10 @@ class UserProfile(models.Model):
         super(UserProfile, self).save(*args, **kwargs)
 
 # auto-create profiles on registration
-def create_user_profile(sender, user, request, **kwargs):
-    UserProfile.objects.get_or_create(user=user)
-
-user_registered.connect(create_user_profile)
+@receiver(post_save, sender=User)
+def handle_user_save(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
 admin.site.register(Author)
 admin.site.register(Book)

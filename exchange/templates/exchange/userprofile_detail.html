@@ -5,8 +5,8 @@
 {% block title %}Your profile{% endblock %}
 
 {% block content %}
-{% if is_friend or user == userprofile.user %}
 <div class="row">
+    {% if is_friend or user == userprofile.user %}
     <div class="col-md-4">
         {% if userprofile.profile_picture %}
         <p><img src="{{ userprofile.profile_picture.url }}"/></p>
@@ -42,19 +42,20 @@
     <div class="col-md-8">
 
     </div>
+    {% else %}
+    <div class="col-md-5">
+        <p>It appears you are not friends with {{ userprofile.user.username }}.</p>
+        {% if sent_request %}
+        <p>You have already sent a <a href="{% url 'friendship_requests_detail' sent_request.pk %}">friend request</a>.</p>
+        {% elif received_request %}
+        <p>They have sent you a <a href="{% url 'friendship_requests_detail' received_request.pk %}">friend request</a>.</p>
+        {% else %}
+        <form method="post" action="{% url 'friendship_requests_send' userprofile.user.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Send friend request</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<p>It appears you are not friends with {{ userprofile.user.username }}.</p>
-{% if sent_request %}
-<p>You have already sent a <a href="{% url 'friendship_requests_detail' sent_request.pk %}">friend request</a>.</p>
-{% elif received_request %}
-<p>They have sent you a <a href="{% url 'friendship_requests_detail' received_request.pk %}">friend request</a>.</p>
-{% else %}
-<form method="post" action="{% url 'friendship_requests_send' userprofile.user.pk %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Send friend request</button>
-</form>
-{% endif %}
-</div>
-{% endif %}
 {% endblock %}

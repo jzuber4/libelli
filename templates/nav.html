@@ -28,14 +28,15 @@
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="{% url 'profile' user.username %}">{% bootstrap_icon 'user' %} Your profile</a></li>
                     <li><a href="{% url 'edit_profile' %}">{% bootstrap_icon 'edit' %} Edit profile</a></li>
-                    <li><a href="{% url 'auth_logout' %}">{% bootstrap_icon 'log-out' %} Sign Out</a></li>
+                    <li><a href="{% url 'account_settings' %}">{% bootstrap_icon 'cog' %} Your account</a></li>
+                    <li><a href="{% url 'account_logout' %}">{% bootstrap_icon 'log-out' %} Log out</a></li>
                 </ul>
             </li>
             {% else %}
             <li>
                 {# div needed for styling #}
                 <div>
-                    <a href="{% url 'auth_login' %}" class="btn btn-default navbar-btn">Sign in</a>
+                    <a href="{% url 'account_login' %}" class="btn btn-default navbar-btn">Log in</a>
                 </div>
             </li>
             {% endif %}

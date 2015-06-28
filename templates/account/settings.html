@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans "Account" %}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <form method="POST" action="{% url "account_settings" %}">
+            <legend>{% trans "Account" %}</legend>
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="control-label" for="id_readonly_username">{% trans "Username" %}</label>
+                <input id="id_readonly_username" class="form-control" value="{{user.username}}" readonly/>
+            </div>
+            {% bootstrap_form form %}
+            <p>
+            {% buttons %}
+            <button class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+            {% endbuttons %}
+        </form>
+        <p><a href="{% url 'account_password' %}">{% trans "Change password" %}</a></p>
+    </div>
+</div>
+{% endblock %}

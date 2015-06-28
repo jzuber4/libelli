@@ -38,12 +38,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # extra dependencies
+    'account',
     'bootstrap3',
     'braces',
     'compressor',
     'debug_toolbar',
     'friendship',
-    'registration',
     # my app(s)
     'exchange',
     'friends',
@@ -58,6 +58,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    # extra middleware classes
+    # for account package
+    "account.middleware.LocaleMiddleware",
+    "account.middleware.TimezoneMiddleware",
 )
 
 ROOT_URLCONF = 'libelli.urls'
@@ -73,6 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # extra context processors
+                'account.context_processors.account', # to use account package
             ],
         },
     },
@@ -123,12 +129,10 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# auth settings
-LOGIN_REDIRECT_URL = '/'
-
-# registration settings
-ACCOUNT_ACTIVATION_DAYS = 2    # 2 days to activate account via email
-REGISTRATION_AUTO_LOGIN = True # Automatically log the user in
+# account settings
+LOGIN_URL = "/account/login/"
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 
 # email debug
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
