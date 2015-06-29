@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from image_cropping import ImageCropField, ImageRatioField
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
@@ -46,7 +48,8 @@ class Review(models.Model):
 
 class UserProfile(models.Model):
     user            = models.OneToOneField(User)
-    profile_picture = models.ImageField(upload_to="profile_pictures", blank=True, null=True)
+    profile_picture = ImageCropField(upload_to="profile_pictures", blank=True, null=True)
+    cropping        = ImageRatioField('profile_picture', '430x430', size_warning=True)
     name            = models.CharField(max_length=100, blank=True, verbose_name='full name')
     address_line_1  = models.CharField(max_length=50, blank=True, verbose_name='address line 1')
     address_line_2  = models.CharField(max_length=50, blank=True, verbose_name='address line 2')

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% load cropping %}
+
+{% block title %}{% trans "Edit Profile Picture" %}{% endblock %}
+
+{% block js %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <form enctype="multipart/form-data" method="post" action="{% url 'edit_profile_picture' %}">
+            <legend>{% trans "Edit Profile Picture" %}</legend> 
+            {% csrf_token %} 
+            {% if user.userprofile.profile_picture %}
+            {% bootstrap_form form%}
+            {% else %}
+            {% bootstrap_field form.profile_picture %}
+            {% endif %}
+
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% if user.userprofile.profile_picture %}
+                {% trans 'Save' %}
+                {% else %}
+                {% trans 'Upload' %}
+                {% endif %}
+            </button>
+            <a href="{% url 'profile' user.username %}" class="btn btn-default pull-right">Cancel</a>
+            {% endbuttons %}
+        </form>
+    </div>
+    {% if user.userprofile.profile_picture %}
+    <div class="col-md-4">
+        <legend>{% trans "Preview" %}</legend>
+        <div class="profile-pic">
+        <img src="{% cropped_thumbnail userprofile "cropping" scale=0.50 %}">
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

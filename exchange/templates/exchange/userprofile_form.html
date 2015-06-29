@@ -2,18 +2,23 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block title %}{% trans "Edit Profile" %}{% endblock %}
+{% block title %}{% trans "Edit Profile Info" %}{% endblock %}
+
+{% block js %}
+{{ form.media }}
+{% endblock %}
 
 {% block content %}
 <div class="row">
     <div class="col-md-5">
         <form enctype="multipart/form-data" method="post" action="{% url 'edit_profile' %}">
-            <legend>{% trans "Edit Profile" %}</legend> 
+            <legend>{% trans "Edit Profile Info" %}</legend> 
             {% csrf_token %} 
             {% bootstrap_form form %}
 
             {% buttons %}
             <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+            <a href="{% url 'profile' user.username %}" class="btn btn-default pull-right">Cancel</a>
             {% endbuttons %}
         </form>
     </div>

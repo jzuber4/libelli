@@ -43,7 +43,9 @@ INSTALLED_APPS = (
     'braces',
     'compressor',
     'debug_toolbar',
+    'easy_thumbnails',
     'friendship',
+    'image_cropping',
     # my app(s)
     'exchange',
     'friends',
@@ -145,3 +147,9 @@ BOOTSTRAP3 = {
 # image uploads
 MEDIA_ROOT = 'media/'
 MEDIA_URL  = '/media/'
+
+# image cropping / thumbnails
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS

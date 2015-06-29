@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
-{% load friendshiptags %}
+{% load cropping %}
 
 {% block title %}Your profile{% endblock %}
 
@@ -8,15 +8,24 @@
 <div class="row">
     {% if is_friend or user == userprofile.user %}
     <div class="col-md-4">
+
+        <div class="profile-pic">
         {% if userprofile.profile_picture %}
-        <p><img src="{{ userprofile.profile_picture.url }}"/></p>
+        <img src="{% cropped_thumbnail userprofile "cropping" scale=0.50 %}">
+        {% else %}
+        {% bootstrap_icon 'user'%}
         {% endif %}
+        <a href="{% url 'edit_profile_picture' %}"><div class="edit">Edit {% bootstrap_icon 'camera' %}</div></a>
+        </div>
+
         {% if userprofile.name %}
         <p>{{userprofile.name}}</p>
         {% else %}
         <p>{{userprofile.user.username}}</p>
         {% endif %}
+
         <p><a href="#">{{ friends|length }} friend{% if friends|length != 1 %}s{% endif %}</a></p>
+
         {% if userprofile.address_line_1 or userprofile.address_line_2 or userprofile.address_city or userprofile.address_state or userprofile.address_code or userprofile.address_country %}
         <p>Address:</p>
         <ul class="list-unstyled">
@@ -34,9 +43,10 @@
             {% endif %}
         </ul>
         {% endif %}
+
         <br/>
         {% if user == userprofile.user %}
-        <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% bootstrap_icon 'edit' %} Edit profile</a>
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">{% bootstrap_icon 'edit' %} Edit profile info</a>
         {% endif %}
     </div>
     <div class="col-md-8">

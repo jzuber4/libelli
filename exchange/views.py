@@ -1,6 +1,7 @@
 from braces.views import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.views.generic.detail import DetailView
@@ -33,7 +34,6 @@ class UserProfileDetailView(LoginRequiredMixin, DetailView):
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = UserProfile
     fields = [
-        'profile_picture',
         'name',
         'address_line_1',
         'address_line_2',
@@ -42,6 +42,21 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         'address_code',
         'address_country',
     ]
+
+    def get_object(self, **kwargs):
+        return self.request.user.userprofile
+
+class UserProfilePictureUpdateView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    fields = [
+        'profile_picture',
+        'cropping',
+    ]
+
+    template_name = "exchange/userprofile_picture_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy("edit_profile_picture")
 
     def get_object(self, **kwargs):
         return self.request.user.userprofile

@@ -1,0 +1,52 @@
+/* source for prof pic edit overlay: http://codepen.io/MeredithU/pen/jcsvx */
+.profile-pic {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.profile-pic:hover .edit {
+    display: block;
+}
+
+.edit {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: none;
+    color: #fff;
+    font-size: medium;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+}
+
+/* nav profile thumbnail styling */
+.nav-profile-thumb {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Profile picture placeholder */
+.profile-pic span.glyphicon-user {
+    font-size: 1500%;
+    margin-bottom: -30px;
+}
+
+/* CSS to make file input form appear nicer */
+/* Make clear checkbox on file input form appear on new line */
+span.clearable-file-input {
+    display: block;
+}
+/* Get rid of newline beneath clear box */
+.file-upload br {
+    display: none;
+}
+
+
+
+
+
