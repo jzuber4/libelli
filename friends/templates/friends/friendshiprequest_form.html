@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}Send Friend Request{% endblock %}
+
 {% block content %}
-<p>It appears you are not friends with {{ other_user.username }}.</p>
-<form method="post" action="{% url 'friend_requests_send' other_user.pk %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-primary">Send friend request</button>
-</form>
+<div class="row">
+    <div class="col-sm-12">
+        <legend>Send friend request</legend>
+        <p>It appears you are not friends with {{ other_user.username }}.</p>
+        <form method="post" action="{% url 'friend_requests_send' other_user.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Send friend request</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

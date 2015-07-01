@@ -11,6 +11,11 @@
 
 {% block content %}
 <div class="row">
+    <div class="col-sm-12">
+        <p><strong><a href="{% url 'profile' user.username %}">{% bootstrap_icon 'chevron-left' %} Back to profile</a></strong></p>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-5">
         <form enctype="multipart/form-data" method="post" action="{% url 'edit_profile_picture' %}">
             <legend>{% trans "Edit Profile Picture" %}</legend> 
@@ -29,7 +34,6 @@
                 {% trans 'Upload' %}
                 {% endif %}
             </button>
-            <a href="{% url 'profile' user.username %}" class="btn btn-default pull-right">Cancel</a>
             {% endbuttons %}
         </form>
     </div>

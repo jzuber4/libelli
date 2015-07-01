@@ -1,11 +1,32 @@
 {% extends "base.html" %}
 
+{% block title %}Friend Requests{% endblock %}
+
 {% block content %}
-{% if friendshiprequest_list|length > 0 %}
-{% for fr in friendshiprequest_list %}
-{% include "friends/friendshiprequest_individual.html" %}
-{% endfor %}
-{% else %}
-You have no friend requests.
-{% endif %}
+<div class="row">
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs">
+            <li role="presentation" {% if t == 'all' %}class="active"{% endif %}>
+                <a href="{% url 'friendship_requests_list' t='all'%}">All <span class="badge">{{ all_friend_request_count }}</span></a>
+            </li>
+            <li role="presentation" {% if t == 'pending' %}class="active"{% endif %}>
+                <a href="{% url 'friendship_requests_list' t='pending'%}">Pending <span class="badge">{{ pending_friend_request_count }}</span></a>
+            </li>
+            <li role="presentation" {% if t == 'rejected' %}class="active"{% endif %}>
+                <a href="{% url 'friendship_requests_list' t='rejected'%}">Rejected <span class="badge">{{ rejected_friend_request_count }}</span></a>
+            </li>
+            <li role="presentation" {% if t == 'sent' %}class="active"{% endif %}>
+                <a href="{% url 'friendship_requests_list' t='sent'%}">Sent <span class="badge">{{ sent_friend_request_count }}</span></a>
+            </li>
+        </ul>
+        <br>
+        {% if friendshiprequest_list|length > 0 %}
+        {% for fr in friendshiprequest_list %}
+        {% include "friends/friendshiprequest_individual.html" %}
+        {% endfor %}
+        {% else %}
+        No friend requests
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load cropping %}
+{% load friends %}
+{% load staticfiles %}
+
+{% block title %}Friends List{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>
+            {% if friends_username == user.username %}
+            Your friends
+            {% else %}
+            {{ friends_username }}'s friends
+            {% endif %}
+        </h1>
+    </div>
+</div>
+<br/>
+<div class="row">
+    {% for friend in user_list %}
+    <div class="col-md-2 col-sm-3 col-xs-6 friend-list">
+        <a href="{% url 'profile' friend.username %}">
+            <div class="profile-pic">
+                {% if friend.userprofile.profile_picture %}
+                <img src="{% cropped_thumbnail friend.userprofile "cropping" scale=0.35 %}" width="150px" height="150px">
+                {% else %}
+                <img src="{% static 'images/profile.svg'%}" onerror="{% static 'images/profile.png' %}" width="150px" height="150px">
+                {% endif %}
+            </div>
+            <p>
+            <strong>
+                {% if friend.userprofile.name %}
+                {{ friend.userprofile.name }}
+                {% else %}
+                {{ friend.username }}
+                {% endif %}
+                {% if friend == user %}
+                (You)
+                {% endif %}
+            </strong>
+            </p>
+        </a>
+        <br/>
+    </div>
+    <div class="col-md-2 col-sm-3 col-xs-6 friend-list">
+        {% get_friends friend as friends %}
+        <p><a href="{% url 'friends_list' friend.username %}">{{ friends|length }} friend{% if friends|length != 1 %}s{% endif %}</a></p>
+
+        {% if friend.userprofile.address_line_1 or friend.userprofile.address_line_2 or friend.userprofile.address_city or friend.userprofile.address_state or friend.userprofile.address_code or friend.userprofile.address_country %}
+        <ul class="list-unstyled">
+            {% if friend.userprofile.address_line_1 %}
+            <li><small>{{ friend.userprofile.address_line_1 }}</small></li>
+            {% endif %}
+            {% if friend.userprofile.address_line_2 %}
+            <li><small>{{ friend.userprofile.address_line_1 }}</small></li>
+            {% endif %}
+            {% if friend.userprofile.address_city or friend.userprofile.address_state or friend.userprofile.address_code %}
+            <li><small>{{ friend.userprofile.address_city }}, {{ friend.userprofile.address_state }} {{ friend.userprofile.address_code }}</small></li>
+            {% endif %}
+            {% if friend.userprofile.address_country %}
+            <li><small>{{ friend.userprofile.address_country }}</small></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+        {% if friend == user %}
+        {# Nothing - can't friend request yourself #}
+
+        {% elif friends_username == user.username or friend in user_friends %}
+        {# If you're friends with them, give option to unfriend #}
+        <a href="{% url 'friends_unfriend' friend.username %}" class="btn btn-danger">Unfriend</a>
+
+        {% elif friend in pending_requests_users %}
+        {# If you've received friend request from them, link to the request #}
+        {% for fr in user_pending_requests %}
+            {% if fr.from_user == friend %}
+                Pending <a href="{% url 'friendship_requests_detail' fr.pk %}">friend request</a>.
+            {% endif %}
+        {% endfor %}
+        
+
+        {% elif friend in sent_requests_users %}
+        {# If you've already sent a friend request to them, link to that request #}
+        {% for fr in user_sent_requests %}
+            {% if fr.to_user == friend %}
+                Sent a <a href="{% url 'friendship_requests_detail' fr.pk %}">friend request</a>.
+            {% endif %}
+        {% endfor %}
+
+        {% else %}
+        {# Otherwise, provide a button to send them a friend request #}
+        <form method="post" action="{% url 'friendship_requests_send' friend.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Send Friend Request</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    {% if not user_list %}
+    <div class="col-sm-12">
+        <p>It appears you don't have any friends.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

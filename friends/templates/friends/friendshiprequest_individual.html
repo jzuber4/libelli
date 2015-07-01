@@ -1,10 +1,18 @@
+{% load cropping %}
+{% load staticfiles %}
+
 <div class="row">
     <p>
 {% if fr.from_user == user %}
 {# outgoing friend requests #}
 
 <div class="col-xs-8">
-    <p>Pending friend request for <a href="{% url 'profile' fr.to_user.username %}">{{ fr.to_user.username }}</a>.</p>
+    {% if fr.to_user.userprofile.profile_picture %}
+    <img src="{% cropped_thumbnail fr.to_user.userprofile 'cropping' scale=0.10 %}" class="profile-thumb" width="43px" height="43px">
+    {% else %}
+    <img src="{% static 'images/profile.svg'%}" onerror="{% static 'images/profile.png' %}" class="profile-thumb" width="43px" height="43px">
+    {% endif %}
+    Sent friend request to <a href="{% url 'profile' fr.to_user.username %}">{{ fr.to_user.username }}</a>.
 </div>
 <div class="col-xs-4">
     <form class="form" method="post" action="{% url 'friendship_requests_cancel' fr.pk %}">
@@ -18,12 +26,22 @@
 
 {% if fr.rejected %}
 <div class="col-xs-12">
-    <p>You rejected <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}'s</a> friend request.</p>
+    {% if fr.from_user.userprofile.profile_picture %}
+    <img src="{% cropped_thumbnail fr.from_user.userprofile 'cropping' scale=0.10 %}" class="profile-thumb" width="43px" height="43px">
+    {% else %}
+    <img src="{% static 'images/profile.svg'%}" onerror="{% static 'images/profile.png' %}" class="profile-thumb" width="43px" height="43px">
+    {% endif %}
+    Rejected friend request from <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}</a>.
 </div>
 
 {% else %}
 <div class="col-xs-8">
-    <p>Pending friend request from <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}</a>.</p>
+    {% if fr.from_user.userprofile.profile_picture %}
+    <img src="{% cropped_thumbnail fr.from_user.userprofile 'cropping' scale=0.10 %}" class="profile-thumb" width="43px" height="43px">
+    {% else %}
+    <img src="{% static 'images/profile.svg'%}" onerror="{% static 'images/profile.png' %}" class="profile-thumb" width="43px" height="43px">
+    {% endif %}
+    Received friend request from <a href="{% url 'profile' fr.from_user.username %}">{{ fr.from_user.username }}</a>.
 </div>
 <div class="col-xs-4">
     <form class="form-inline" method="post">

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Unfriend{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <legend>Unfriend {{ other_user.username }}</legend> 
+        <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to unfriend {{ other_user.username }}?</p>
+            <button type="submit" class="btn btn-danger">Unfriend</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

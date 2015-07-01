@@ -1,5 +1,7 @@
 {% load bootstrap3 %}
 {% load cropping %}
+{% load friends %}
+{% load staticfiles %}
 
 <nav class="navbar navbar-default">
 <div class="container-fluid">
@@ -20,16 +22,20 @@
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
             <li>
-                <a href="{% url 'friendship_requests_list' %}">
-                    Friend requests
+                <a href="{% url 'friends_list' user.username %}">Friends</a>
+            </li>
+            <li>
+                <a href="{% url 'friendship_requests_list' t='pending' %}">
+                    {% get_unread_friend_request_count user as unread_friend_request_count %}
+                    Friend requests <span class="badge">{{ unread_friend_request_count }}</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                     {% if user.userprofile.profile_picture %}
-                    <img src="{% cropped_thumbnail user.userprofile "cropping" scale=0.05 %}" class="nav-profile-thumb">
+                    <img src="{% cropped_thumbnail user.userprofile 'cropping' scale=0.05 %}" class="profile-thumb" width="21px" height="21px">
                     {% else %}
-                    <div class="nav-profile-thumb" >{% bootstrap_icon 'user' %}</div>
+                    <img src="{% static 'images/profile.svg'%}" onerror="{% static 'images/profile.png' %}" class="profile-thumb" width="21px" height="21px">
                     {% endif %}
                     {{ user }} <span class="caret"></span>
                 </a>

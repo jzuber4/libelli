@@ -25,15 +25,9 @@
 }
 
 /* nav profile thumbnail styling */
-.nav-profile-thumb {
+img.profile-thumb {
     display: inline-block;
     margin-right: 5px;
-}
-
-/* Profile picture placeholder */
-.profile-pic span.glyphicon-user {
-    font-size: 1500%;
-    margin-bottom: -30px;
 }
 
 /* CSS to make file input form appear nicer */
@@ -46,7 +40,11 @@ span.clearable-file-input {
     display: none;
 }
 
-
+/* friend list styling */
+div.friend-list {
+    display: block;
+    height: 200px;
+}
 
 
 

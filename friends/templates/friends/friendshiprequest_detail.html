@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
+{% block title %}Friend Request{% endblock %}
+
 {% block content %}
-{% include "friends/friendshiprequest_individual.html" with fr=friendshiprequest %}
-<a href="{% url 'friendship_requests_list' %}">View all friend requests</a>
+<div class="row">
+    <div class="col-sm-12">
+        {% include "friends/friendshiprequest_individual.html" with fr=friendshiprequest %}
+        <br/>
+        <a href="{% url 'friendship_requests_list' t='all' %}">View all friend requests</a>
+    </div>
+</div>
 {% endblock %}
