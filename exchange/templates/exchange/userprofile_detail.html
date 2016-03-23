@@ -43,7 +43,7 @@ Profile
             <li>{{ userprofile.address_line_1 }}</li>
             {% endif %}
             {% if userprofile.address_line_2 %}
-            <li>{{ userprofile.address_line_1 }}</li>
+            <li>{{ userprofile.address_line_2 }}</li>
             {% endif %}
             {% if userprofile.address_city or userprofile.address_state or userprofile.address_code %}
             <li>{{ userprofile.address_city }}, {{ userprofile.address_state }} {{ userprofile.address_code }}</li>
@@ -62,7 +62,30 @@ Profile
         {% endif %}
     </div>
     <div class="col-md-8">
-
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Pages</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user_book in user_books %}
+                <tr>
+                    <td>{{user_book.book.title}}</td>
+                    <td>{{user_book.book.authors.all|join:", "}}</td>
+                    <td>{{user_book.book.categories.all|join:", "}}</td>
+                    <td>{{user_book.book.published_date}}</td>
+                    <td>{{user_book.book.page_count}}</td>
+                    <td>{{user_book.book.description|slice:"70"}}{% if user_book.book.description|length > 70 %}...{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
     {% else %}
     <div class="col-md-5">

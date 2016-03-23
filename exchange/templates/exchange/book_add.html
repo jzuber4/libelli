@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Add a book{% endblock %}
+
+{% block content %}
+<script>
+    $(function() {
+        $("#searchForm").on("input", function() {
+            var query = $(this).val(); 
+            queryString = query.trim().split(/\s+/).join('+');
+            $.ajax("https://www.googleapis.com/books/v1/volumes?key=AIzaSyDhCNzpBA1nP1-TZ8Pmj_XGAKp27uD29sE&q="+queryString)
+            .done(_.throttle(function(data) {
+                var tableBody = $("#resultsTableBody");
+                tableBody.empty();
+                console.log(data);
+                var items = data.items;
+                for (var i = 0; i < items.length; i++) {
+                    var title = items[i].volumeInfo.title;
+                    var authors = items[i].volumeInfo.authors;
+                    if (authors !== undefined && authors.length > 0) {
+                        authors = authors.join(', ');
+                    } else {
+                        authors = '-';
+                    }
+                    var publishedDate = items[i].volumeInfo.publishedDate;
+                    var pageCount = items[i].volumeInfo.pageCount;
+                    tableBody.append('<tr><td>' + title
+                        + '</td><td>' + authors
+                        + '</td><td>' + publishedDate
+                        + '</td><td>' + pageCount
+                        + '</td><td><form method="post"><input type="hidden" name="id" value="' +  items[i].id + '">'
+                        + '<input class="btn" type="submit" value="Add">' + "{% csrf_token %}"
+                        + '</form>'
+                        + '</td></tr>'
+                    );
+                }
+            }, 800))
+            .fail(function(obj, textStatus, error) {
+                alert(textStatus);
+            });
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-12">
+        <p>Search for a book to add it to your library</p>
+        <div class="col-md-6">
+            <input id="searchForm" type="text" class="form-control" placeholder="Title, author, etc." >
+            <table class="table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Authors</th>
+                        <th>Year</th>
+                        <th>Pages</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load cropping %}
+{% load staticfiles %}
+
+{% block title %}
+{% if user == userprofile.user %}
+Your
+{% else %}
+{{userprofile.user.username}}'s
+{% endif %} 
+Books
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2">
+        <a class="btn btn-primary" href="{% url 'book_add' %}">
+            Add a book!
+        </a>
+    </div>
+    <div class="col-md-8">
+        {% if object_list|length > 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Authors</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Pages</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user_book in object_list %}
+                <tr>
+                    <td>{{user_book.book.title}}</td>
+                    <td>{{user_book.book.authors.all|join:", "}}</td>
+                    <td>{{user_book.book.categories.all|join:", "}}</td>
+                    <td>{{user_book.book.published_date}}</td>
+                    <td>{{user_book.book.page_count}}</td>
+                    <td>{{user_book.book.description|slice:"70"}}{% if user_book.book.description|length > 70 %}...{% endif %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <h2>
+        It looks like you don't have any books!
+        </h2>
+        <h3>
+            Why don't you <a href="{% url 'book_add' %}">add one</a> to your library?
+        </h3>
+        {% endif %}
+    </div>
+    <div class="col-md-2">
+    </div>
+</div>
+{% endblock %}
+
